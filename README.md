@@ -41,60 +41,60 @@ The following showcases a potential ceasar cypher mapping table. This specific e
 | z         |            25 |    +3 | c          |
 
 
-### Phase 2: Atbash Cypher (@OCSB)
+### Phase 2: Monoalphabetic Substitution Cipher (@OCSB)
 
-This clue is encrypted via an Atbash cypher. An Atbash cypher is another type of *substitution* cypher, but unlike a Caesar cypher, it does not use a shift value. Instead, each character is mapped to its corresponding character from the opposite end of the alphabet.
+This clue is encrypted via a monoalphabetic substitution cipher. A monoalphabetic substitution cipher is a type of *substitution* cipher where each plaintext character is consistently mapped to exactly one ciphertext character.
 
-In other words, `a` maps to `z`, `b` maps to `y`, `c` maps to `x`, and so on.
+Unlike a Caesar cipher, the mapping does not follow a fixed shift. Instead, the alphabet may be mapped in any arbitrary order, as long as each plaintext character maps to a unique ciphertext character.
 
-**Example Atbash Cypher**:
-The following showcases the complete Atbash mapping table.
+**Example Monoalphabetic Substitution Cipher**:
+The following showcases one possible random substitution mapping.
 
 | Plaintext | Ciphertext |
 | --------- | ---------- |
-| a         | z          |
-| b         | y          |
-| c         | x          |
-| d         | w          |
-| e         | v          |
-| f         | u          |
-| g         | t          |
-| h         | s          |
-| i         | r          |
-| j         | q          |
-| k         | p          |
-| l         | o          |
-| m         | n          |
-| n         | m          |
-| o         | l          |
-| p         | k          |
+| a         | q          |
+| b         | w          |
+| c         | e          |
+| d         | r          |
+| e         | t          |
+| f         | y          |
+| g         | u          |
+| h         | i          |
+| i         | o          |
+| j         | p          |
+| k         | a          |
+| l         | s          |
+| m         | d          |
+| n         | f          |
+| o         | g          |
+| p         | h          |
 | q         | j          |
-| r         | i          |
-| s         | h          |
-| t         | g          |
-| u         | f          |
-| v         | e          |
-| w         | d          |
-| x         | c          |
-| y         | b          |
-| z         | a          |
+| r         | k          |
+| s         | l          |
+| t         | z          |
+| u         | x          |
+| v         | c          |
+| w         | v          |
+| x         | b          |
+| y         | n          |
+| z         | m          |
 
 For example:
 
 ```text
 plaintext:  hello
-ciphertext: svool
+ciphertext: itssg
 ```
 
-One useful property of the Atbash cypher is that encryption and decryption use the exact same mapping. Applying Atbash a second time restores the original plaintext.
+Because the same substitution mapping is used for the entire message, repeated plaintext characters remain repeated in the ciphertext. This means patterns, letter frequencies, and repeated character sequences can help when attempting to break the cipher.
 
-### Phase 3: Rail Fence Cypher (@ECRB)
+### Phase 3: Rail Fence Cipher (@ECRB)
 
-This clue is encrypted via a Rail Fence cypher. A Rail Fence cypher is a type of *transposition* cypher. Unlike substitution cyphers, the actual characters are not changed. Instead, their positions are rearranged.
+This clue is encrypted via a Rail Fence cipher. A Rail Fence cipher is a type of *transposition* cipher. Unlike substitution ciphers, the actual characters are not changed. Instead, their positions are rearranged.
 
 The plaintext is written across a fixed number of "rails" in a repeating zig-zag pattern. The ciphertext is then produced by reading each rail from left to right, starting from the top rail and moving downward.
 
-**Example Rail Fence Cypher**:
+**Example Rail Fence Cipher**:
 The following example uses the plaintext `helloworld` and 3 rails.
 
 ```text
