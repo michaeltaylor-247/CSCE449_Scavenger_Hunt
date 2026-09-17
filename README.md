@@ -40,6 +40,8 @@ The following showcases a potential ceasar cypher mapping table. This specific e
 | y         |            24 |    +3 | b          |
 | z         |            25 |    +3 | c          |
 
+Because the same substitution mapping is used for the entire message, repeated plaintext characters remain repeated in the ciphertext. This means patterns, letter frequencies, and repeated character sequences can help when attempting to break the cipher. Because there are only 26 possible shift values, it is quite easy to brute-force a Ceasar Cipher. 
+
 
 ### Phase 2: Monoalphabetic Substitution Cipher (@OCSB)
 
@@ -86,7 +88,7 @@ plaintext:  hello
 ciphertext: itssg
 ```
 
-Because the same substitution mapping is used for the entire message, repeated plaintext characters remain repeated in the ciphertext. This means patterns, letter frequencies, and repeated character sequences can help when attempting to break the cipher.
+Because the same substitution mapping is used for the entire message, repeated plaintext characters remain repeated in the ciphertext. This means patterns, letter frequencies, and repeated character sequences can help when attempting to break the cipher. However brute-forcing is more difficult as there are $26!$ possible mappings.
 
 ### Phase 3: Rail Fence Cipher (@ECRB)
 
