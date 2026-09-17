@@ -43,7 +43,79 @@ The following showcases a potential ceasar cypher mapping table. This specific e
 
 ### Phase 2: Atbash Cypher (@OCSB)
 
+This clue is encrypted via an Atbash cypher. An Atbash cypher is another type of *substitution* cypher, but unlike a Caesar cypher, it does not use a shift value. Instead, each character is mapped to its corresponding character from the opposite end of the alphabet.
 
+In other words, `a` maps to `z`, `b` maps to `y`, `c` maps to `x`, and so on.
+
+**Example Atbash Cypher**:
+The following showcases the complete Atbash mapping table.
+
+| Plaintext | Ciphertext |
+| --------- | ---------- |
+| a         | z          |
+| b         | y          |
+| c         | x          |
+| d         | w          |
+| e         | v          |
+| f         | u          |
+| g         | t          |
+| h         | s          |
+| i         | r          |
+| j         | q          |
+| k         | p          |
+| l         | o          |
+| m         | n          |
+| n         | m          |
+| o         | l          |
+| p         | k          |
+| q         | j          |
+| r         | i          |
+| s         | h          |
+| t         | g          |
+| u         | f          |
+| v         | e          |
+| w         | d          |
+| x         | c          |
+| y         | b          |
+| z         | a          |
+
+For example:
+
+```text
+plaintext:  hello
+ciphertext: svool
+```
+
+One useful property of the Atbash cypher is that encryption and decryption use the exact same mapping. Applying Atbash a second time restores the original plaintext.
 
 ### Phase 3: Rail Fence Cypher (@ECRB)
+
+This clue is encrypted via a Rail Fence cypher. A Rail Fence cypher is a type of *transposition* cypher. Unlike substitution cyphers, the actual characters are not changed. Instead, their positions are rearranged.
+
+The plaintext is written across a fixed number of "rails" in a repeating zig-zag pattern. The ciphertext is then produced by reading each rail from left to right, starting from the top rail and moving downward.
+
+**Example Rail Fence Cypher**:
+The following example uses the plaintext `helloworld` and 3 rails.
+
+```text
+Rail 1: h . . . o . . . l .
+Rail 2: . e . l . w . r . d
+Rail 3: . . l . . . o . . .
+```
+
+Reading each row from top to bottom gives:
+
+```text
+Rail 1: hol
+Rail 2: elwrd
+Rail 3: lo
+```
+
+The resulting ciphertext is:
+
+```text
+ciphertext: holelwrdlo
+```
+
+To decrypt the message, the receiver must know the number of rails. They can then reconstruct the zig-zag pattern, determine how many characters belong in each rail, place the ciphertext characters back into those positions, and finally follow the zig-zag path to recover the original plaintext.
 
