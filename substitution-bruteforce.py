@@ -47,7 +47,6 @@ class SubstitutionBruteForce:
         return score
 
     def decrypt(self, text: str, key: str) -> str:
-        # Replaced order: key -> alphabet to properly decrypt ciphertext to plaintext
         translation_table = str.maketrans(key, self.alphabet)
         return text.translate(translation_table)
 
@@ -82,7 +81,6 @@ class SubstitutionBruteForce:
                 best_score = parent_score
                 best_key = parent_key
 
-        # Decrypt raw text to preserve punctuation and spaces in the final output
         final_decrypted_text = self.decrypt(self.raw_ciphertext, best_key)
         return final_decrypted_text, best_key
 
