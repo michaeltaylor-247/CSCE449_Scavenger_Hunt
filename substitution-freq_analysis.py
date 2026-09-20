@@ -1,4 +1,3 @@
-import re
 import math
 import random
 from collections import Counter
@@ -31,7 +30,7 @@ COMMON_QUADGRAMS = set(
 
 def generate_frequency_key(ciphertext: str) -> str:
     """Create a cipher-to-plaintext key using letter-frequency ranks."""
-    clean_ciphertext = re.sub(r"[^a-z]", "", ciphertext.lower())
+    clean_ciphertext = ciphertext.replace(" ", "")
     counts = Counter(clean_ciphertext)
 
     # Rank letters that occur, then append absent letters so the key contains
@@ -51,14 +50,14 @@ def generate_frequency_key(ciphertext: str) -> str:
 
 
 def substitution_decrypt(ciphertext: str, key: str) -> str:
-    """Decrypt while preserving the input's spaces and punctuation."""
+    """Decrypt lowercase ciphertext while preserving word spaces."""
     translation_table = str.maketrans(ALPHABET, key)
-    return ciphertext.lower().translate(translation_table)
+    return ciphertext.translate(translation_table)
 
 
 def english_score(text: str) -> float:
     """Score text using common, general-purpose English letter sequences."""
-    clean_text = re.sub(r"[^a-z]", "", text)
+    clean_text = text.replace(" ", "")
     score = 0.0
 
     for index in range(len(clean_text) - 1):
@@ -77,11 +76,10 @@ def english_score(text: str) -> float:
 
 
 def improve_key(ciphertext: str, initial_key: str,
-                restarts: int = 20, iterations: int = 10000) -> str:
-    """Improve a frequency key with automatic swaps and simulated annealing."""
+                restarts: int = 20, iterations: int = 10000) -> list:
+    """Return the best candidate found during each refinement restart."""
     random_source = random.Random(ciphertext)
-    best_key = initial_key
-    best_score = english_score(substitution_decrypt(ciphertext, best_key))
+    candidates = []
 
     for restart in range(restarts):
         current_key = list(initial_key)
@@ -96,6 +94,8 @@ def improve_key(ciphertext: str, initial_key: str,
         current_score = english_score(
             substitution_decrypt(ciphertext, "".join(current_key))
         )
+        restart_best_key = "".join(current_key)
+        restart_best_score = current_score
         temperature = 5.0
 
         for _ in range(iterations):
@@ -112,9 +112,9 @@ def improve_key(ciphertext: str, initial_key: str,
                 difference / temperature
             ):
                 current_score = candidate_score
-                if current_score > best_score:
-                    best_score = current_score
-                    best_key = "".join(current_key)
+                if current_score > restart_best_score:
+                    restart_best_score = current_score
+                    restart_best_key = "".join(current_key)
             else:
                 current_key[first], current_key[second] = (
                     current_key[second], current_key[first]
@@ -122,7 +122,9 @@ def improve_key(ciphertext: str, initial_key: str,
 
             temperature = max(0.1, temperature * 0.9995)
 
-    return best_key
+        candidates.append((restart_best_score, restart_best_key))
+
+    return candidates
 
 
 def main():
@@ -132,14 +134,31 @@ def main():
         print("No ciphertext provided.")
         return
 
+    clean_ciphertext = ciphertext.replace(" ", "")
+    frequencies = Counter(clean_ciphertext).most_common()
     initial_key = generate_frequency_key(ciphertext)
-    key = improve_key(ciphertext, initial_key)
-    decrypted = substitution_decrypt(ciphertext, key)
+    initial_text = substitution_decrypt(ciphertext, initial_key)
 
-    print("\nMost likely decryption:\n")
+    print("\nStep 1: Ciphertext letter frequencies\n")
+    print(" ".join(f"{letter}:{count}" for letter, count in frequencies))
+
+    print("\nStep 2: Initial frequency-ranked candidate\n")
     print(f"Alphabet: {ALPHABET}")
-    print(f"Key:      {key}")
-    print(f"Text:     {decrypted}")
+    print(f"Key:      {initial_key}")
+    print(f"Score:    {english_score(initial_text):.2f}")
+    print(f"Text:     {initial_text}")
+
+    print("\nStep 3: Candidates from automatic key refinement")
+    print("Inspect the candidates and identify the readable plaintext.\n")
+
+    candidates = improve_key(ciphertext, initial_key)
+    for restart, (score, key) in enumerate(candidates, start=1):
+        decrypted = substitution_decrypt(ciphertext, key)
+        print(f"Restart:  {restart:2}")
+        print(f"Score:    {score:.2f}")
+        print(f"Key:      {key}")
+        print(f"Text:     {decrypted}")
+        print()
 
 
 if __name__ == "__main__":

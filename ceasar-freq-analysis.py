@@ -36,11 +36,13 @@ def caesar_decrypt(ciphertext: str, shift: int) -> str:
     plaintext = ""
 
     for char in ciphertext:
-        decrypted = chr(
+        if char == " ":
+            plaintext += char
+            continue
+
+        plaintext += chr(
             (ord(char) - ord("a") - shift) % 26 + ord("a")
         )
-
-        plaintext += decrypted
 
     return plaintext
 
@@ -53,8 +55,9 @@ def chi_squared_score(text: str) -> float:
     Lower score means the text is more English-like.
     """
 
-    counts = Counter(text)
-    total = len(text)
+    letters = text.replace(" ", "")
+    counts = Counter(letters)
+    total = len(letters)
 
     score = 0.0
 
@@ -82,7 +85,8 @@ def main():
     # to normal English letter frequencies.
     candidates.sort()
 
-    print("\nMost likely decryptions:\n")
+    print("\nFrequency-analysis candidates (lowest score first):")
+    print("Inspect all candidates and identify the readable plaintext.\n")
 
     for score, shift, decrypted in candidates:
         print(f"Shift: {shift:2}")
